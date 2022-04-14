@@ -54,6 +54,7 @@ def main():
 	options['evolver_options'] = {'type': 'TEBD', 'order': '4_opt'}
 	options['product_options'] = {'type': 'up'}
 	options['state_options'] = {'type': 'KZM'}
+	options['repository_options'] = {'type': 'Pickle'}
 	options['measurement_options'] = {'type': 'KZMSweep'}
 
 	vi = 1E-5
