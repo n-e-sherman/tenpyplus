@@ -1,5 +1,6 @@
 from tenpyplus.infrastructure import Builder, Options
 from .mongo import MongoRepository
+from .pickle import PickleRepository
 from ._base import Repository
 
 class RepositoryBuilder(Builder):
@@ -15,6 +16,8 @@ class RepositoryBuilder(Builder):
 		choice = options['type'] = options.get('type', 'Mongo')
 		if choice == 'Mongo':
 			return MongoRepository(options)
+		elif choice == 'Pickle':
+			return PickleRepository(options)
 		elif choice == 'None':
 			return Repository(options)
 		else:

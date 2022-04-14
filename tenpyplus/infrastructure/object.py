@@ -117,9 +117,20 @@ class Object:
 		data = self._data.copy()
 		return type(self)(**data)
 				
+	def _dir_choice(self, data_dir, res_dir):
+		return data_dir
+
 	@property
 	def mongo_type(self):
 		return mongoengine.Document
+
+	@property
+	def pickle_type(self):
+		return 'check_point'
+
+	
+
+
 
 
 

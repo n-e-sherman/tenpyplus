@@ -9,8 +9,10 @@ class GroundState(State):
 
 	def _set_data(self, **data):
 		super()._set_data(**data)
-		self._data.update({'model': data.get('model',None), 
+		self._data.update({'initial': data.get('initial',None),
+						   'model': data.get('model',None), 
 						   'solver': data.get('solver',None),
+						   'initial'
 						   'E0': None})
 		self.psi0 = data.get('psi0', None)
 

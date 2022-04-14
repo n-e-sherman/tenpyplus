@@ -11,7 +11,7 @@ class KZMState(State):
 
 	def _set_data(self, **data):
 		super()._set_data(**data)
-		self._data.update({'initial' : data.get('initial','Product'),
+		self._data.update({'initial' : data.get('initial', None),
 						   'model': data.get('model',None), 
 						   'evolver': data.get('evolver',None),
 						   'observer': data.get('observer',None),

@@ -32,11 +32,14 @@ class StateBuilder(Builder):
 		choice = options['type'] = options.get('type', 'Ground')
 
 		
+		print(options)
 		repo = self.repoBuilder.build(options.get('repository_options',{}))
 		if choice == 'Ground':
 			options['model'] = self.modelBuilder.build(options.get('model_options', {}))
 			options['psi0'] = self.productBuilder.build({**options.get('product_options', {}), **{'lattice': options['model'].lat}})
 			options['solver'] = self.solverBuilder.build(options.get('solver_options', {}))
+			product_options = options.get('product_options', _options.get('product_options', {}))
+			options['initial'] = product_options.get('type', 'random')
 			state = GroundState(**options)
 			if not repo.load(state):
 				state.calculate(repo)
@@ -46,6 +49,8 @@ class StateBuilder(Builder):
 			options['model'] = self.modelBuilder.build({**options.get('model_options', {}), **{'dynamic': True}})
 			options['observer'] = self.observerBuilder.build(options.get('observer_options', {}))
 			options['evolver'] = self.evolverBuilder.build(options.get('evolver_options', {}))
+			product_options = options.get('product_options', _options.get('product_options', {}))
+			options['initial'] = product_options.get('type', 'random')
 			state = KZMState(**options)
 			if not repo.load(state):
 				psi = self._make_initial(options)

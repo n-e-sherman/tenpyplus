@@ -11,6 +11,7 @@ class MongoRepository(Repository):
         self.cache = {}
         loaded = True
         db = options.get('db',os.environ.get('db', 'Research'))
+        
         mongoengine.disconnect()
         mongoengine.connect(db)
         self._load = options.get('load', True)

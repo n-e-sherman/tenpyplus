@@ -109,7 +109,9 @@ class Options(Object):
 		}
 
 		data['repository_options'] = {
-			'type': 'Mongo'
+			'type': 'Mongo',
+			'data_dir': '.data/',
+			'res_dir': '.results/'
 		}
 
 		data['measurement_options'] = {
