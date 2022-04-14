@@ -30,9 +30,6 @@ class StateBuilder(Builder):
 		options = params.copy()
 
 		choice = options['type'] = options.get('type', 'Ground')
-
-		
-		print(options)
 		repo = self.repoBuilder.build(options.get('repository_options',{}))
 		if choice == 'Ground':
 			options['model'] = self.modelBuilder.build(options.get('model_options', {}))
@@ -43,7 +40,6 @@ class StateBuilder(Builder):
 			state = GroundState(**options)
 			if not repo.load(state):
 				state.calculate(repo)
-
 
 		elif choice == 'KZM':
 			options['model'] = self.modelBuilder.build({**options.get('model_options', {}), **{'dynamic': True}})

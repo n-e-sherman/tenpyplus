@@ -82,7 +82,7 @@ class KZMSweepMeasurement(Measurement):
 		model_options['dynamic'] = False
 		model_options['type'] = model_options['name']
 		model_options['conserve'] = 'parity'
-		product_options = {'type': 'updown'}
+		product_options = {'type': self._state.initial}
 		ground_state = StateBuilder().build(options={'type': 'Ground', 'model_options': model_options, 'product_options': product_options})
 		psi0 = ground_state.psi
 
