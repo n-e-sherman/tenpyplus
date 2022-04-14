@@ -90,18 +90,13 @@ class PickleRepository(Repository):
 
     def _save_data_frame(self, file, obj):
 
-        print('Pickle._save_data_frame')
         data = obj.to_dict()
-        print('Pickle._save_data_frame -- data', data)
         try:
             df = pd.DataFrame(data)
-            print('Pickle._save_data_frame -- df', df)
         except ValueError:
             df = pd.DataFrame([data])
         except:
-            print('pickle data_frame save failed')
             return False
-        print('Pickle._save_data_frame -- file', file)
         df.to_csv(file, index=False)
 
     def _hash(self, obj):
