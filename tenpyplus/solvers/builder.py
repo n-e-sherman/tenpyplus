@@ -1,4 +1,5 @@
 from .dmrg import DMRGSolver
+from .tebd import TEBDSolver
 from tenpyplus.infrastructure import Builder, Options
 
 class SolverBuilder(Builder):
@@ -17,6 +18,8 @@ class SolverBuilder(Builder):
 		choice = options['type'] = options.get('type', 'DMRG')
 		if choice == 'DMRG':
 			return DMRGSolver(**options)
+		elif choice == 'TEBD':
+			return TEBDSolver(**options)
 		else:
 			raise NotImplementedError('solver choice ' + choice + ' not implemented.')
 

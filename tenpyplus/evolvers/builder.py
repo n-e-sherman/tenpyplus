@@ -1,4 +1,6 @@
 from .tebd import TEBDEvolver
+from .tebdvar import TEBDVarEvolver
+from .wii import WIIEvolver
 from ._base import Evolver
 from tenpyplus.infrastructure import Builder, Options
 
@@ -19,6 +21,10 @@ class EvolverBuilder(Builder):
 		
 		if choice == 'TEBD':
 			return TEBDEvolver(**options)
+		if choice == 'TEBDVar':
+			return TEBDVarEvolver(**options)
+		elif choice == 'WII':
+			return WIIEvolver(**options)
 		elif choice == 'None':
 			return Evolver(**options)
 		else:

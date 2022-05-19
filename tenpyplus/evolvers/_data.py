@@ -1,6 +1,7 @@
 import mongoengine
 from ._base import Evolver
 from .tebd import TEBDEvolver
+from .wii import WIIEvolver
 from tenpyplus.infrastructure import MongoDynamicEmbeddedDocument
 
 class MongoEvolverBase(MongoDynamicEmbeddedDocument):
@@ -15,3 +16,9 @@ class MongoTEBDEvolver(MongoEvolverBase):
     _object = TEBDEvolver
     order = mongoengine.IntField(required=True)
     optimum = mongoengine.BooleanField(required=True, default=False)
+
+class MongoWIIEvolver(MongoEvolverBase):
+    
+    _object = WIIEvolver
+    order = mongoengine.IntField(required=True)
+    compression = mongoengine.StringField(required=True)

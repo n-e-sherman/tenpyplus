@@ -2,7 +2,7 @@
 from tenpyplus.infrastructure import MongoDynamicDocument
 import mongoengine
 from ._base import Measurement
-from .measurement import StateMeasurement, IsingCriticalMeasurement, XXSineGordonMassMeasurement, IsingGroundStateOverlapMeasurement, KZMSweepMeasurement
+from .measurement import StateMeasurement, PottsStateMeasurement, IsingCriticalMeasurement, XXSineGordonMassMeasurement, IsingGroundStateOverlapMeasurement, KZMSweepMeasurement
 
 class MongoMeasurementBase(MongoDynamicDocument):
 
@@ -36,7 +36,7 @@ class MongoMeasurementBase(MongoDynamicDocument):
     order = mongoengine.IntField()
 
     # solver params
-    solver = mongoengine.StringField()
+    solver = mongoengine.StringField(default='DMRG')
     sites = mongoengine.IntField()
 
     meta = {'allow_inheritance': True}
@@ -51,6 +51,20 @@ class MongoStateMeasurement(MongoMeasurementBase):
     Sy = mongoengine.FloatField()
     Sz = mongoengine.FloatField()
     xi = mongoengine.FloatField()
+
+class MongoPottsStateMeasurement(MongoMeasurementBase):
+
+    _object = PottsStateMeasurement
+
+    E = mongoengine.FloatField()
+    S = mongoengine.FloatField()
+    Omega = mongoengine.FloatField()
+    Omegadag = mongoengine.FloatField()
+    Gamma = mongoengine.FloatField()
+    xi = mongoengine.FloatField()
+    T1 = mongoengine.FloatField()
+    T2 = mongoengine.FloatField()
+    T3 = mongoengine.FloatField()
 
 class MongoIsingCriticalMeasurement(MongoMeasurementBase):
 

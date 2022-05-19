@@ -1,6 +1,7 @@
 
 from ._base import Measurement
 from tenpyplus.models import IsingModel
+from tenpy.networks.mps import TransferMatrix
 import pandas as pd
 import numpy as np
 
@@ -37,6 +38,47 @@ class StateMeasurement(Measurement):
 	def mongo_type(self):
 		from ._data import MongoStateMeasurement
 		return MongoStateMeasurement
+
+class PottsStateMeasurement(Measurement):
+
+	def _set_data(self, **data):
+		super()._set_data(**data)
+		self._state = data.get('state', None)
+	
+	def measure(self, repo):
+
+		psi = self._state.psi
+		M = self._state.model
+		E = np.mean(M.bond_energies(psi))
+		Omega = np.mean(psi.expectation_value('Gamma1'))
+		Omegadag = np.mean(psi.expectation_value('Gamma2'))
+		Gamma = np.mean(psi.expectation_value('D'))
+		S = np.mean((psi.entanglement_entropy()))
+		xi = psi.correlation_length()
+		TM = TransferMatrix(psi, psi)
+		T, _ = TM.eigenvectors(num_ev=3, which='LM')
+		res = {
+				   'E': E, 
+				   'S': S, 
+				   'Omega': Omega, 
+				   'Omegadag': Omegadag, 
+				   'Gamma': Gamma, 
+				   'xi': xi,
+				   'T1': 0,
+				   'T2': 0,
+				   'T3': 0,
+			   }
+		for i,_T in enumerate(T):
+			res['T'+str(i+1)] = abs(_T)
+		res.update(self._state.get_labels())
+		res['state'] = self._state.name
+		self._data.update(res)
+		repo.save(self)
+
+	@property
+	def mongo_type(self):
+		from ._data import MongoPottsStateMeasurement
+		return MongoPottsStateMeasurement
 
 class IsingCriticalMeasurement(Measurement):
 
@@ -81,21 +123,24 @@ class KZMSweepMeasurement(Measurement):
 		model_options = self._state.model.to_dict()
 		model_options['dynamic'] = False
 		model_options['type'] = model_options['name']
-		model_options['conserve'] = 'parity'
+		print('KZMSweepMeasurement -- model_options[conserve]:',model_options['conserve'])
 		product_options = {'type': self._state.initial}
 		ground_state = StateBuilder().build(options={'type': 'Ground', 'model_options': model_options, 'product_options': product_options})
 		psi0 = ground_state.psi
 
 		model = ground_state.model
 		l = abs(psi0.overlap(psit))
-		Ep = np.mean(model.bond_energies(psit))
-		Ec = np.mean(model.bond_energies(psi0))
-		E0 = model.exact_energy()
+		Ep = np.min(model.bond_energies(psit))
+		Ec = np.min(model.bond_energies(psi0))
+		E0 = 0
+		if model_options['type'] == 'Ising':
+			E0 = model.exact_energy()
 		res = {'l': l, 'Ep': Ep, 'E0': E0, 'Ec': Ec}
 		print(res)
 		res.update(self._state.get_labels())
 		res['state'] = self._state.name
 		res['conserve'] = ground_state.model.conserve
+		res['solver'] = ground_state.solver.name
 		self._data.update(res)
 
 		repo.save(self)

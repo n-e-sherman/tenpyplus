@@ -25,9 +25,13 @@ class KZMState(State):
 		ts = self.model.path_times()
 		for t in ts:
 			self.model.update_couplings(t=t)
+			if t == self.model.path.tf:
+				print("final time skipped")
+				continue
+			self.evolver.options['dt'] = np.min([self.evolver.options['dt'], abs(t - self.model.path.tf)])
 			self.psi = self.evolver.evolve(self.psi, self.model)
 			self._observe()
-			print('t0:', round(self.model.path.t0), 't:', round(t,3), 'tf:', round(self.model.path.tf,3), np.mean(self.model.bond_energies(self.psi)), self.model.exact_energy())
+			print('t0:', round(self.model.path.t0, 3), 't:', round(t,3), 'tf:', round(self.model.path.tf,3), np.mean(self.model.bond_energies(self.psi)))
 			repo.save(self)
 
 	def _observe(self):

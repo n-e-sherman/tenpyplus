@@ -54,9 +54,13 @@ class Options(Object):
 			'type': 'TEBD',
 		    'order': 2,
 		    'N_steps': 1,
+		    'compression_method': 'variational',
 		    'trunc_params': {
 		        'chi_max': 10,
-		        'svd_min': 1.e-10
+		        'chi_min': 10,
+		        'degeneracy_tol': 0,
+		        'svd_min': 0,
+		        'trunc_cut': 0
 		    }
 		}
 		data['evolver_options'] = data['tebd_options'].copy()
@@ -65,9 +69,12 @@ class Options(Object):
 			'type': 'DMRG',
 			'sites': 2,
 		    'mixer': True, 
-		    'trunc_params': { 
-		    	'chi_max': 10, 
-		    	'svd_min': 1.e-10 
+		    'trunc_params': {
+		        'chi_max': 10,
+		        'chi_min': 10,
+		        'degeneracy_tol': 0,
+		        'svd_min': 0,
+		        'trunc_cut': 0
 		    }
 		}
 		data['solver_options'] = data['dmrg_options'].copy()
@@ -122,5 +129,5 @@ class Options(Object):
 
 	def make_uniform(self, data):
 
-		data['evolver_options']['trunc_params']['chi_max'] = data['solver_options']['trunc_params']['chi_max'] = data['global_options']['chi']
+		data['evolver_options']['trunc_params']['chi_min'] = data['solver_options']['trunc_params']['chi_min'] = data['evolver_options']['trunc_params']['chi_max'] = data['solver_options']['trunc_params']['chi_max'] = data['global_options']['chi']
 		data['path_options']['dt'] = data['evolver_options']['dt'] = data['global_options']['dt']

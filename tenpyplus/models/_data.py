@@ -4,6 +4,7 @@ import mongoengine
 from ._base import Model, DynamicModel
 from .ising import IsingModel, DynamicIsingModel
 from .xx import XXModel, DynamicXXModel
+from .potts import PottsModel, DynamicPottsModel
 
 class MongoModelBase(MongoDynamicEmbeddedDocument):
 
@@ -56,6 +57,25 @@ class MongoDynamicIsingModel(MongoDynamicModelBase):
     h = mongoengine.FloatField(required=True, default=0)
     h0 = mongoengine.FloatField(Required=True, default=0)
     hf = mongoengine.FloatField(Required=True, default=0)
+
+class MongoPottsModel(MongoModelBase):
+    
+    _object = PottsModel
+
+    J = mongoengine.FloatField(required=True, default=0)
+    g = mongoengine.FloatField(required=True, default=0)
+
+class MongoDynamicPottsModel(MongoDynamicModelBase):
+
+    _object = DynamicPottsModel
+
+    J = mongoengine.FloatField(required=True, default=0)
+    J0 = mongoengine.FloatField(Required=True, default=0)
+    Jf = mongoengine.FloatField(Required=True, default=0)
+
+    g = mongoengine.FloatField(required=True, default=0)
+    g0 = mongoengine.FloatField(Required=True, default=0)
+    gf = mongoengine.FloatField(Required=True, default=0)
 
 class MongoXXModel(MongoModelBase):
 

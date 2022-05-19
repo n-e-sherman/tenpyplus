@@ -50,7 +50,6 @@ class Model(Object):
         from ._data import MongoModelBase
         return MongoModelBase
 
-
 class DynamicModel(Model):
 
     def __init__(self, **data):

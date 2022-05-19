@@ -133,7 +133,7 @@ class ProductBuilder(Builder):
 			return [np.array([1.0/np.sqrt(2), 1.0/np.sqrt(2)]), np.array([1.0/np.sqrt(2), -1.0/np.sqrt(2)])]
 		elif choice == 'leftright':
 			return [np.array([1.0/np.sqrt(2), -1.0/np.sqrt(2)]), np.array([1.0/np.sqrt(2), 1.0/np.sqrt(2)])]
-		elif choice == 'all':
-			return [np.array([1.0/np.sqrt(2), -1.0/np.sqrt(2)]), np.array([1.0/np.sqrt(2), 1.0/np.sqrt(2)])]
+		elif choice == '0':
+			return [np.array([1.0,0.0,0.0]), np.array([1.0,0.0,0.0])]
 		else:
 			raise NotImplementedError('product choice ' + choice + ' not implemented.')

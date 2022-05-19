@@ -1,5 +1,6 @@
 from .ising import IsingModel, DynamicIsingModel
 from .xx import XXModel, DynamicXXModel
+from .potts import PottsModel, DynamicPottsModel
 from .paths import PathBuilder
 
 from tenpyplus.infrastructure import Builder, Options
@@ -34,6 +35,12 @@ class ModelBuilder(Builder):
 				options['path'] = self.pathBuilder.build(options.get('path_options', {}))
 				return DynamicXXModel(**options) # define path
 			return XXModel(**options)
+
+		elif choice == 'Potts':
+			if dynamic:
+				options['path'] = self.pathBuilder.build(options.get('path_options', {}))
+				return DynamicPottsModel(**options) # define path
+			return PottsModel(**options)
 
 		else:
 			raise NotImplementedError('model choice ' + choice + ' not implemented.')
