@@ -264,7 +264,8 @@ class VarunMeasurement(Measurement):
 		# THE MAIN CHANGES NEEDED #
 		###########################
 		# Compute whatever quantities you'd like
-		# For operators, you can use the ops defined in potts.py
+		# For operators, you can use the ops defined in potts.py, see below
+		# ops = dict(Gamma1=Gamma1, Gamma2=Gamma2, D=D, Omega=Omega, Omegadag=Omegadag, Gamma=Gamma)
 		model = ground_state.model
 		l = abs(psi0.overlap(psit))
 		Ep = np.min(model.bond_energies(psit))
