@@ -233,4 +233,69 @@ class IsingGroundStateOverlapMeasurement(Measurement):
 		from ._data import MongoIsingGroundStateOverlapMeasurement
 		return MongoIsingGroundStateOverlapMeasurement
 
+
+
+class VarunMeasurement(Measurement):
+
+	# This is defined by the KZM state, use the parameters of the KZM state to compute the ground state
+
+	def _set_data(self, **data):
+		super()._set_data(**data)
+		self._state = data.get('state', None)
+		self._query_skips += ['l', 'Ep', 'Ec', 'E0'] # CHANGE, these strings are result strings and not query strings
+
+	def measure(self, repo):
+
+		from tenpyplus.states import StateBuilder
+
+		# KZM state called psit
+		psit = self._state.psi
+
+		# Ground state called psi0 <--- If you don't need, comment this out to save time.
+		model_options = self._state.model.to_dict()
+		model_options['dynamic'] = False
+		model_options['type'] = model_options['name']
+		print('KZMSweepMeasurement -- model_options[conserve]:',model_options['conserve'])
+		product_options = {'type': self._state.initial}
+		ground_state = StateBuilder().build(options={'type': 'Ground', 'model_options': model_options, 'product_options': product_options})
+		psi0 = ground_state.psi
+
+		###########################
+		# THE MAIN CHANGES NEEDED #
+		###########################
+		# Compute whatever quantities you'd like
+		# For operators, you can use the ops defined in potts.py
+		model = ground_state.model
+		l = abs(psi0.overlap(psit))
+		Ep = np.min(model.bond_energies(psit))
+		Ec = np.min(model.bond_energies(psi0))
+		E0 = 0
+		if model_options['type'] == 'Ising':
+			E0 = model.exact_energy()
+
+		# put quantities in dictionary res with a labelled name.
+		res = {'l': l, 'Ep': Ep, 'E0': E0, 'Ec': Ec}
+		print(res)
+		###########################
+		# THE MAIN CHANGES NEEDED #
+		###########################
+
+		# putting into res properties of the KZM state.
+		res.update(self._state.get_labels())
+
+		# putting into the results properties of the state, what type of state, what conservations you have, what solver used, etc.
+		res['state'] = self._state.name
+		res['conserve'] = ground_state.model.conserve
+		res['solver'] = ground_state.solver.name
+
+		# updates the meta-data of this class with your results.
+		self._data.update(res)
+
+		# saves the results.
+		repo.save(self)
+
+	@property
+	def mongo_type(self):
+		from ._data import MongoVarunMeasurement
+		return MongoVarunMeasurement
 		        

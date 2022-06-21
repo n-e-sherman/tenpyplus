@@ -96,3 +96,14 @@ class MongoIsingGroundStateOverlapMeasurement(MongoMeasurementBase):
     O = mongoengine.FloatField()
     m = mongoengine.FloatField()
     mc = mongoengine.FloatField()
+
+class MongoVarunMeasurement(MongoMeasurementBase):
+
+    _object = KZMSweepMeasurement
+
+    # set these equal to the result quantities you use.
+    l = mongoengine.FloatField()
+    Ep = mongoengine.FloatField()
+    E0 = mongoengine.FloatField()
+    Ec = mongoengine.FloatField()
+    conserve = mongoengine.StringField()

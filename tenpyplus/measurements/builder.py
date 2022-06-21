@@ -2,7 +2,7 @@
 from tenpyplus.infrastructure import Builder, Options
 from tenpyplus.states import StateBuilder
 from tenpyplus.repositories import RepositoryBuilder
-from .measurement import IsingCriticalMeasurement, StateMeasurement, XXSineGordonMassMeasurement, KZMSweepMeasurement
+from .measurement import IsingCriticalMeasurement, StateMeasurement, XXSineGordonMassMeasurement, KZMSweepMeasurement, VarunMeasurement
 
 
 class MeasurementBuilder(Builder):
@@ -33,6 +33,9 @@ class MeasurementBuilder(Builder):
 		elif choice == 'XXSineGordonMass':
 			options['state'] = self.stateBuilder.build(options.get('state_options', {}))
 			measurement = XXSineGordonMassMeasurement(**options)
+		elif choice == 'Varun':
+			options['state'] = self.stateBuilder.build({**options.get('state_options', {}), **{'type': 'Ground'}})
+			measurement = VarunMeasurement(**options)
 		else:
 			raise NotImplementedError('measurement choice ' + choice + ' not implemented.')
 		measurement.measure(repo)
