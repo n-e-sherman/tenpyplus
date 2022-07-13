@@ -79,8 +79,12 @@ class MongoKZMSweepMeasurement(MongoMeasurementBase):
 
     l = mongoengine.FloatField()
     Ep = mongoengine.FloatField()
+    Ep0 = mongoengine.FloatField()
+    Ep1 = mongoengine.FloatField()
     E0 = mongoengine.FloatField()
     Ec = mongoengine.FloatField()
+    Ec0 = mongoengine.FloatField()
+    Ec1 = mongoengine.FloatField()
     conserve = mongoengine.StringField()
 
 class MongoXXSineGordonMassMeasurement(MongoMeasurementBase):

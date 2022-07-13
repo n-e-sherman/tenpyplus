@@ -130,12 +130,17 @@ class KZMSweepMeasurement(Measurement):
 
 		model = ground_state.model
 		l = abs(psi0.overlap(psit))
-		Ep = np.min(model.bond_energies(psit))
-		Ec = np.min(model.bond_energies(psi0))
+		Eps = model.bond_energies(psit)
+		Ecs = model.bond_energies(psi0)
+		# Ep = np.min(model.bond_energies(psit))
+		# Ec = np.min(model.bond_energies(psi0))
 		E0 = 0
 		if model_options['type'] == 'Ising':
 			E0 = model.exact_energy()
-		res = {'l': l, 'Ep': Ep, 'E0': E0, 'Ec': Ec}
+		res = {'l': l, 'E0': E0, 'Ep': np.min(Eps), 'Ec': np.min(Ecs)}
+		for i in range(len(Eps)):
+			res['Ec'+str(i)] = Ecs[i]
+			res['Ep'+str(i)] = Eps[i]
 		print(res)
 		res.update(self._state.get_labels())
 		res['state'] = self._state.name

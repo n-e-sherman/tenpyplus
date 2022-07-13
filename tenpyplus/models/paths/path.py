@@ -7,8 +7,10 @@ def make_ramp(ramp='linear', v=1.0, dt=0.1):
     if ramp == 'linear':
         ti = -1.0 / v
         ts = np.array(list(np.arange(-1.0 / v, 0, dt)) + [0])
+        ts = ts[ts <= 0]
         return ts, make_linear_ramp(v)
     elif ramp == 'smooth':
+        ts = ts[ts <= 0]
         ts = np.array(list(np.arange(-1.5 / v, 0, dt)) + [0])
         return ts, make_smooth_ramp(v)
     else:
