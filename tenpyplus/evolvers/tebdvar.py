@@ -30,6 +30,6 @@ class TEBDVarEvolver(Evolver):
     
     @property
     def mongo_type(self):
-        from ._data import MongoTEBDEvolver
-        return MongoTEBDEvolver
+        from ._data import MongoTEBDVarEvolver
+        return MongoTEBDVarEvolver
 

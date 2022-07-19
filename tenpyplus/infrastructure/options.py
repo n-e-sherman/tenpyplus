@@ -128,6 +128,6 @@ class Options(Object):
 		self._data[os.getpid()] = data
 
 	def make_uniform(self, data):
-
-		data['evolver_options']['trunc_params']['chi_min'] = data['solver_options']['trunc_params']['chi_min'] = data['evolver_options']['trunc_params']['chi_max'] = data['solver_options']['trunc_params']['chi_max'] = data['global_options']['chi']
+		# data['evolver_options']['trunc_params']['chi_min'] = data['solver_options']['trunc_params']['chi_min'] = data['global_options']['chi']
+		data['evolver_options']['trunc_params']['chi_max'] = data['solver_options']['trunc_params']['chi_max'] = data['global_options']['chi']
 		data['path_options']['dt'] = data['evolver_options']['dt'] = data['global_options']['dt']
